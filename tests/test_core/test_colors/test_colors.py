@@ -36,6 +36,22 @@ class TestColors(TestCase):
             PlotlyError, pattern3, colors.validate_colors, color_tuple
         )
 
+    def test_validate_colors_default_does_not_change_global(self):
+        # validate_colors(None) works on DEFAULT_PLOTLY_COLORS; it must not
+        # overwrite the module's list with the converted colors
+        default = list(colors.DEFAULT_PLOTLY_COLORS)
+
+        self.assertEqual(
+            colors.validate_colors(None)[0],
+            (0.12156862745098039, 0.4666666666666667, 0.7058823529411765),
+        )
+        self.assertEqual(colors.DEFAULT_PLOTLY_COLORS, default)
+
+        self.assertEqual(
+            colors.validate_colors(None, colortype="rgb")[0], "rgb(31, 119, 180)"
+        )
+        self.assertEqual(colors.DEFAULT_PLOTLY_COLORS, default)
+
     def test_convert_colors_to_same_type(self):
         # test colortype
         color_tuple = ["#aaaaaa", "#bbbbbb", "#cccccc"]

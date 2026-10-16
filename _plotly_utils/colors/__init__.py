@@ -314,7 +314,8 @@ def validate_colors(colors, colortype="tuple"):
     from numbers import Number
 
     if colors is None:
-        colors = DEFAULT_PLOTLY_COLORS
+        # A copy: the loops below convert the colors in place.
+        colors = list(DEFAULT_PLOTLY_COLORS)
 
     if isinstance(colors, str):
         if colors in PLOTLY_SCALES:
